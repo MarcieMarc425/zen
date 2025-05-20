@@ -37,6 +37,17 @@ impl PartialEq for DecisionNode {
 }
 
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
+pub struct ApiNodeContent {
+    pub url: String,
+    pub method: String,
+    pub headers: Option<HashMap<String, String>>,
+    pub body: Option<Value>,
+    #[serde(flatten)]
+    pub transform_attributes: TransformAttributes,
+}
+
+#[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 #[serde(tag = "type")]
 #[serde(rename_all = "camelCase")]
 pub enum DecisionNodeKind {
@@ -62,6 +73,9 @@ pub enum DecisionNodeKind {
     },
     SwitchNode {
         content: SwitchNodeContent,
+    },
+    ApiNode {
+        content: ApiNodeContent,
     },
     CustomNode {
         content: CustomNodeContent,

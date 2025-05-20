@@ -1,3 +1,4 @@
+use crate::handler::api::ApiHandler;
 use crate::handler::custom_node_adapter::{CustomNodeAdapter, CustomNodeRequest};
 use crate::handler::decision::DecisionHandler;
 use crate::handler::expression::ExpressionHandler;
@@ -434,6 +435,32 @@ impl<L: DecisionLoader + 'static, A: CustomNodeAdapter + 'static> DecisionGraph<
                                 source: e.into(),
                                 trace: error_trace(&node_traces),
                             }
+                        })?;
+
+                    node_request.input.dot_remove("$nodes");
+                    res.output.dot_remove("$nodes");
+
+                    trace!({
+                        input: node_request.input,
+                        output: res.output.clone(),
+                        trace_data: res.trace_data,
+                    });
+                    walker.set_node_data(nid, res.output);
+                }
+                DecisionNodeKind::ApiNode { .. } => {
+                    let node_request = NodeRequest {
+                        node: node.clone(),
+                        iteration: self.iteration,
+                        input: walker.incoming_node_data(&self.graph, nid, true),
+                    };
+
+                    let res = ApiHandler::new(self.trace)
+                        .handle(node_request.clone())
+                        .await
+                        .map_err(|e| NodeError {
+                            node_id: node.id.clone(),
+                            source: e.into(),
+                            trace: error_trace(&node_traces),
                         })?;
 
                     node_request.input.dot_remove("$nodes");
