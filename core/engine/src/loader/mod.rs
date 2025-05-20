@@ -4,6 +4,7 @@ use std::sync::Arc;
 
 use thiserror::Error;
 
+pub use azure_blob::AzureBlobLoader;
 pub use cached::CachedLoader;
 pub use closure::ClosureLoader;
 pub use filesystem::{FilesystemLoader, FilesystemLoaderOptions};
@@ -12,6 +13,7 @@ pub use noop::NoopLoader;
 
 use crate::model::DecisionContent;
 
+mod azure_blob;
 mod cached;
 mod closure;
 mod filesystem;

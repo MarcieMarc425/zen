@@ -24,9 +24,12 @@ fixedbitset = "0.5"
 tokio = { workspace = true, features = ["sync", "time"] }
 reqwest = { version = "0.12", features = ["json", "rustls-tls"], default-features = false }
 rquickjs = { version = "0.9", features = ["macro", "loader", "rust-alloc", "futures", "either", "properties"] }
-jsonschema = "0.29"
+jsonschema = "0.30.0"
 zen-expression = { path = "../expression", version = "0.44.1" }
 zen-tmpl = { path = "../template", version = "0.44.1" }
+azure_storage = "0.21.0"
+azure_storage_blobs = "0.21.0"
+azure_identity = "0.24.0"
 
 [dev-dependencies]
 tokio = { workspace = true, features = ["rt-multi-thread", "macros"] }
